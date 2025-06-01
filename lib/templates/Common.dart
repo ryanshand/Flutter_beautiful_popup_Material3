@@ -115,7 +115,7 @@ abstract class BeautifulPopupTemplate extends StatefulWidget {
           options.title,
           maxLines: 1,
           style: TextStyle(
-            fontSize: Theme.of(options.context).textTheme.headline6?.fontSize,
+            fontSize: Theme.of(options.context).textTheme.titleLarge?.fontSize,
             color: primaryColor,
             fontWeight: FontWeight.bold,
           ),
@@ -182,11 +182,21 @@ abstract class BeautifulPopupTemplate extends StatefulWidget {
         ),
       );
       final minHeight = 40.0 - (outline ? 2 : 0);
-      return RaisedButton(
-        color: Colors.transparent,
-        elevation: elevation,
-        highlightElevation: 0,
-        splashColor: Colors.transparent,
+      return ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent, // replaces `color`
+          elevation: elevation,
+          shadowColor: Colors.transparent, // if you want zero shadow
+          splashFactory: NoSplash.splashFactory, // disables splash if needed
+          padding: EdgeInsets.zero, // replaces `padding: EdgeInsets.all(0)`
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ).copyWith(
+          overlayColor: MaterialStateProperty.all(
+              Colors.transparent), // replaces `splashColor`
+        ),
         child: Ink(
           decoration: decoration,
           child: Container(
@@ -198,16 +208,11 @@ abstract class BeautifulPopupTemplate extends StatefulWidget {
             child: Text(
               label,
               style: TextStyle(
-                color: labelColor,
+                color: Colors.white.withOpacity(0.95),
               ).merge(labelStyle),
             ),
           ),
         ),
-        padding: EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        onPressed: onPressed,
       );
     };
   }
@@ -231,7 +236,7 @@ class BeautifulPopupTemplateState extends State<BeautifulPopupTemplate> {
                   4 -
               20;
           return Stack(
-            overflow: Overflow.visible,
+            clipBehavior: Clip.none,
             children: <Widget>[
               Positioned(
                 child: Container(
@@ -247,7 +252,7 @@ class BeautifulPopupTemplateState extends State<BeautifulPopupTemplate> {
         },
       );
       final entry = closeEntry;
-      if (entry != null) Overlay.of(context)?.insert(entry);
+      if (entry != null) Overlay.of(context).insert(entry);
     });
   }
 
@@ -264,7 +269,7 @@ class BeautifulPopupTemplateState extends State<BeautifulPopupTemplate> {
             height: widget.height,
             width: widget.width,
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: widget.layout,
             ),
           ),

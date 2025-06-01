@@ -43,11 +43,21 @@ class TemplateGift extends BeautifulPopupTemplate {
         ),
       );
       final minHeight = 40.0 - (outline ? 4 : 0);
-      return RaisedButton(
-        color: Colors.transparent,
-        elevation: elevation,
-        highlightElevation: 0,
-        splashColor: Colors.transparent,
+      return ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent, // replaces `color`
+          elevation: elevation,
+          shadowColor: Colors.transparent, // if you want zero shadow
+          splashFactory: NoSplash.splashFactory, // disables splash if needed
+          padding: EdgeInsets.zero, // replaces `padding: EdgeInsets.all(0)`
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ).copyWith(
+          overlayColor: MaterialStateProperty.all(
+              Colors.transparent), // replaces `splashColor`
+        ),
         child: Ink(
           decoration: decoration,
           child: Container(
@@ -60,16 +70,10 @@ class TemplateGift extends BeautifulPopupTemplate {
               label,
               style: TextStyle(
                 color: Colors.white.withOpacity(0.95),
-                fontWeight: FontWeight.bold,
               ).merge(labelStyle),
             ),
           ),
         ),
-        padding: EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        onPressed: onPressed,
       );
     };
   }
