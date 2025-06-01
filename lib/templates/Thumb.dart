@@ -37,7 +37,7 @@ class TemplateThumb extends BeautifulPopupTemplate {
           options.title,
           maxLines: 1,
           style: TextStyle(
-            fontSize: Theme.of(options.context).textTheme.headline6?.fontSize,
+            fontSize: Theme.of(options.context).textTheme.titleLarge?.fontSize,
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
@@ -71,11 +71,21 @@ class TemplateThumb extends BeautifulPopupTemplate {
         ),
       );
       final minHeight = 40.0 - (outline ? 2 : 0);
-      return RaisedButton(
-        color: Colors.transparent,
-        elevation: elevation,
-        highlightElevation: 0,
-        splashColor: Colors.transparent,
+      return ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent, // replaces `color`
+          elevation: elevation,
+          shadowColor: Colors.transparent, // if you want zero shadow
+          splashFactory: NoSplash.splashFactory, // disables splash if needed
+          padding: EdgeInsets.zero, // replaces `padding: EdgeInsets.all(0)`
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+          ),
+        ).copyWith(
+          overlayColor: MaterialStateProperty.all(
+              Colors.transparent), // replaces `splashColor`
+        ),
         child: Ink(
           decoration: decoration,
           child: Container(
@@ -92,11 +102,6 @@ class TemplateThumb extends BeautifulPopupTemplate {
             ),
           ),
         ),
-        padding: EdgeInsets.all(0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        onPressed: onPressed,
       );
     };
   }
