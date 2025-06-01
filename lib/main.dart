@@ -100,7 +100,7 @@ class BeautifulPopup {
   BeautifulPopup({
     required BuildContext context,
     required Type? template,
-  })   : _context = context,
+  })  : _context = context,
         _template = template {
     primaryColor = instance.primaryColor; // Get the default primary color.
   }
@@ -140,7 +140,7 @@ class BeautifulPopup {
         alpha: 0,
       );
     }
-    final paint = await PaintingBinding.instance?.instantiateImageCodec(
+    final paint = await ui.instantiateImageCodec(
         asset != null ? Uint8List.fromList(img.encodePng(asset)) : buffer);
     final nextFrame = await paint?.getNextFrame();
     _illustration = nextFrame?.image;
