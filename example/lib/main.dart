@@ -90,37 +90,39 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               Text(
                 'All Templates:',
-                style: Theme.of(context).textTheme.headline4?.merge(
+                style: Theme.of(context).textTheme.titleMedium?.merge(
                       TextStyle(
                         backgroundColor: Colors.transparent,
                       ),
                     ),
               ),
               Spacer(),
-              FlatButton(
-                child: Text('Customize'),
+              TextButton(
                 onPressed: () {
                   popup.show(
                     title: 'Example',
                     content: Container(
                       color: Colors.black12,
-                      child: Text(
-                          'This popup shows you how to customize your own BeautifulPopupTemplate.'),
+                      padding: const EdgeInsets.all(12),
+                      child: const Text(
+                        'This popup shows you how to customize your own BeautifulPopupTemplate.',
+                      ),
                     ),
                     actions: [
                       popup.button(
                         label: 'Code',
-                        labelStyle: TextStyle(),
+                        labelStyle: const TextStyle(),
                         onPressed: () async {
                           await _launchURL(
-                            'https://github.com/jaweii/Flutter_beautiful_popup/blob/master/example/lib/MyTemplate.dart',
+                            'https://github.com/ryanshand/Flutter_beautiful_popup/blob/master/example/lib/MyTemplate.dart',
                           );
                         },
                       ),
                     ],
                   );
                 },
-              )
+                child: const Text('Customize'),
+              ),
             ],
           ),
         ),
@@ -174,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget get body {
-    final exampleCode = ''' 
+    final exampleCode = '''
 final popup = BeautifulPopup(
   context: context,
   template: ${activeDemo?.instance.runtimeType ?? '// Select a template in right'},
@@ -210,7 +212,7 @@ popup.show(
                     margin: EdgeInsets.fromLTRB(20, 20, 10, 10),
                     child: Text(
                       '# Usage',
-                      style: Theme.of(context).textTheme.headline4?.merge(
+                      style: Theme.of(context).textTheme.titleMedium?.merge(
                             TextStyle(
                               color: Colors.black54,
                               backgroundColor: Colors.transparent,
@@ -257,17 +259,23 @@ popup.show(
         backgroundColor:
             activeDemo?.primaryColor ?? Theme.of(context).primaryColor,
         actions: <Widget>[
-          FlatButton(
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero, // Removes default padding
+              minimumSize: Size(32, 32), // Ensures compact size
+              tapTargetSize:
+                  MaterialTapTargetSize.shrinkWrap, // Prevents extra padding
+            ),
+            onPressed: () async {
+              await _launchURL(
+                'https://github.com/ryanshand/Flutter_beautiful_popup',
+              );
+            },
             child: Image.asset(
               'images/github.png',
               width: 32,
               height: 32,
             ),
-            onPressed: () async {
-              await _launchURL(
-                'https://github.com/jaweii/Flutter_beautiful_popup',
-              );
-            },
           ),
         ],
       ),
@@ -286,18 +294,30 @@ popup.show(
         title: const Text('Pick a color!'),
         content: SingleChildScrollView(
           child: ColorPicker(
-            pickerColor: color == null ? Color(0xFF000000) : color!,
-            onColorChanged: (c) => color = c,
-            showLabel: true,
+            pickerColor: color ?? const Color(0xFF000000),
+            onColorChanged: (c) {
+              setState(() => color = c);
+            },
+            colorPickerWidth: 300.0, // Optional: define width
             pickerAreaHeightPercent: 0.8,
+            enableAlpha: true, // Optional: allows transparency
+            displayThumbColor: true,
+            showLabel: true,
+            labelTypes: const [ColorLabelType.rgb], // Optional: use RGB or HEX
+            portraitOnly: true,
           ),
         ),
         actions: <Widget>[
-          FlatButton(
-            child: const Text('Got it'),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).colorScheme.primary,
+            ).copyWith(
+              overlayColor: MaterialStateProperty.all(Colors.transparent),
+            ),
             onPressed: () async {
               callback?.call(color);
             },
+            child: const Text('Got it'),
           ),
         ],
       ),
@@ -464,11 +484,18 @@ popup.show(
                                   ),
                                   Container(
                                     alignment: Alignment.center,
-                                    child: FlatButton(
-                                      hoverColor: Colors.transparent,
-                                      highlightColor: Colors.transparent,
-                                      child: Text('Close'),
-                                      onPressed: Navigator.of(context).pop,
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                              foregroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary)
+                                          .copyWith(
+                                        overlayColor: MaterialStateProperty.all(
+                                            Colors.transparent),
+                                      ),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: const Text('Close'),
                                     ),
                                   ),
                                 ],
