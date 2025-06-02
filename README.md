@@ -12,13 +12,13 @@ Add dependency to you `pubspec.yaml`:
 
 ```
 dependencies:
-    flutter_beautiful_popup: ^1.8.0
+    flutter_beautiful_popup_forked: ^1.8.1
 ```
 
 Import the dependency:
 
 ```
-import 'package:flutter_beautiful_popup/main.dart';
+import 'package:flutter_beautiful_popup_forked/main.dart';
 ```
 
 And then you can display a popup with certain template like this:
